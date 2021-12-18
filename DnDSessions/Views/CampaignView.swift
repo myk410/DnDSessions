@@ -23,7 +23,7 @@ struct CampaignView: View {
                 ScrollView{
                     LazyVStack(alignment:.leading){
                         ForEach(campaign.sessions){ session in
-                            NavigationLink(destination: SessionView(session: session), label: {
+                            NavigationLink(destination: SessionView(campaignTitle: campaign.title, session: session), label: {
                                 
                                 Tab(id:session.id,title: "\(session.title)", color_1: Color.black, color_2: Color(red: 65, green: 0, blue: 0),size: 20, bold: false)
                             })

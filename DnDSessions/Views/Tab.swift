@@ -44,13 +44,11 @@ struct Tab: View {
                             .bold()
                             .foregroundColor(color_2)
                             .padding(.leading, 30)
-                            .padding(.trailing,30)
                     }else{
                         Text(title)
                             .font(Font.custom("Cochin", size: CGFloat(size)))
                             .foregroundColor(color_2)
                             .padding(.leading, 30)
-                            .padding(.trailing,30)
                     }
                 }else{
                     ZStack {
@@ -71,13 +69,11 @@ struct Tab: View {
                         .bold()
                         .foregroundColor(color_2)
                         .padding(.leading, 70)
-                        .padding(.trailing,30)
                     }else{
                         Text(title)
                             .font(Font.custom("Cochin", size: CGFloat(size)))
                             .foregroundColor(color_2)
                             .padding(.leading, 70)
-                            .padding(.trailing,30)
                     }
                 }
                 
@@ -91,6 +87,6 @@ struct Tab: View {
 
 struct Tab_Previews: PreviewProvider {
     static var previews: some View {
-        Tab(id:1,title: "Judge, Jury, & Executioner",color_1: Color.red,color_2: Color.black,size: 20,bold: true)
+        Tab(id:1,title: "The House of Deathly Illusion",color_1: Color.red,color_2: Color.black,size: 20,bold: true)
     }
 }

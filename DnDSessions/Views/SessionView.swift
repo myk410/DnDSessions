@@ -10,6 +10,7 @@ import AVKit
 
 struct SessionView: View {
     
+    var campaignTitle:String
     var session:Session
     @State var audioPlayer: AVPlayer!
     @State var isPlaying: Bool = false
@@ -21,64 +22,83 @@ struct SessionView: View {
     
     var body: some View {
         
-        VStack {
-            
-
-            
-            Text("Session \(session.id):")
-                .font(Font.system(size: 20))
-                .padding(.top)
-            Text("\(session.title)")
-                .font(.title)
-            Text(Dates().dateToString(month: session.date[0], day: session.date[1], year: session.date[2]))
-                .padding(.top,1)
-                .font(Font.system(size: 15))
-            
-            Spacer()
-            
-            Text("\(Time().secToStr(seconds: CMTimeGetSeconds(audioPlayer != nil ? audioPlayer.currentTime() : CMTime(seconds: 0.0, preferredTimescale: 60000)) ))")
-                .onReceive(timer) { _ in
-                    
-                    currentSeconds =
-                    CMTimeGetSeconds(audioPlayer != nil ? audioPlayer.currentTime() : CMTime(seconds: 0.0, preferredTimescale: 60000))
-                }
-            
-            if audioPlayer != nil {
+        TabView{
+            VStack {
                 
-                Slider(value: $playValue, in: 0.0...playerDuration, onEditingChanged: { _ in
-                    changeSliderValue()
-                })
-                    .onReceive(timer) { _ in
-                        
-                        if isPlaying {
-                            if let currentTime = audioPlayer?.currentTime() {
-                                playValue = CMTimeGetSeconds(currentTime)
-                                
-                                if currentTime == CMTime(seconds: 0.0, preferredTimescale: 60000) {
-                                    isPlaying = false
-                                }
-                            }
+                Text("Session \(session.id):")
+                    .font(Font.system(size: 20))
+                    .padding(.top)
+                Text("\(session.title)")
+                    .font(.title)
+                Text(Dates().dateToString(month: session.date[0], day: session.date[1], year: session.date[2]))
+                    .padding(.top,1)
+                    .font(Font.system(size: 15))
+                
+                Spacer()
+                
+                
+                
+                if audioPlayer != nil {
+                    
+                    Slider(value: $playValue, in: 0.0...playerDuration, onEditingChanged: { _ in
+                        changeSliderValue()
+                    })
+                        .onReceive(timer) { _ in
                             
+                            if isPlaying {
+                                if let currentTime = audioPlayer?.currentTime() {
+                                    playValue = CMTimeGetSeconds(currentTime)
+                                    
+                                    if currentTime == CMTime(seconds: 0.0, preferredTimescale: 60000) {
+                                        isPlaying = false
+                                    }
+                                }
+                                
+                            }
+                            else {
+                                isPlaying = false
+                                self.timer.upstream.connect().cancel()
+                            }
                         }
-                        else {
-                            isPlaying = false
-                            self.timer.upstream.connect().cancel()
-                        }
+                        .padding(.horizontal)
+                    
+                    HStack{
+                        
+                        Text("\(Time().secToStr(seconds: CMTimeGetSeconds(audioPlayer != nil ? audioPlayer.currentTime() : CMTime(seconds: 0.0, preferredTimescale: 60000)) ))")
+                            .onReceive(timer) { _ in
+                                
+                                currentSeconds =
+                                CMTimeGetSeconds(audioPlayer != nil ? audioPlayer.currentTime() : CMTime(seconds: 0.0, preferredTimescale: 60000))
+                            }
+                        
+                        Spacer()
+                        Text(Time().secToStr(seconds: playerDuration))
                     }
                     .padding(.horizontal)
+                }
+                
+                Button(action: playPause, label: {
+                    Image(systemName: isPlaying ? "pause.circle.fill" :  "play.circle.fill").resizable().aspectRatio(contentMode: .fit).frame(width:50,height:50)
+                })
+                
+                Spacer()
+                
+    //            Text("\(currentDate)")
+    //                .onReceive(timer){ input in
+    //                    currentDate = input
+    //
+    //                }
+            }
+            .tabItem {
+                Image(systemName: "waveform")
             }
             
-            Button(action: playPause, label: {
-                Image(systemName: isPlaying ? "pause.circle.fill" :  "play.circle.fill").resizable().aspectRatio(contentMode: .fit).frame(width:50,height:50)
-            })
+            Highlights(campaignTitle: campaignTitle, session: session)
+            .tabItem {
+                Image(systemName: "list.bullet.rectangle.fill")
+            }
             
-            Spacer()
             
-//            Text("\(currentDate)")
-//                .onReceive(timer){ input in
-//                    currentDate = input
-//
-//                }
         }.onAppear{
             let url = URL(string: session.url)
             if url != nil {
@@ -134,6 +154,6 @@ struct SessionView: View {
 struct SessionView_Previews: PreviewProvider {
     
     static var previews: some View {
-        SessionView(session: Session(id: 1, title: "Welcome to Daggerford", description: "", highlights: [""], date: [2,23,1987], url: "https://feeds.soundcloud.com/stream/1178566330-g-michael-fortin-strahd-001.mp3"))
+        SessionView(campaignTitle: "The Curse of Strahd", session: Session(id: 1, title: "Welcome to Daggerford", description: "", highlights: [""], date: [2,23,1987], url: "https://feeds.soundcloud.com/stream/1178566330-g-michael-fortin-strahd-001.mp3"))
     }
 }
