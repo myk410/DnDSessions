@@ -17,7 +17,7 @@ struct SessionView: View {
     @State var playValue = 0.0
     @State var playerDuration = 100.0
     @State var currentSeconds = 0.0
-    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State var currentDate = Date()
     
     var body: some View {
@@ -77,9 +77,31 @@ struct SessionView: View {
                     .padding(.horizontal)
                 }
                 
+                HStack{
+                    
+                // Jump back 15 seconds button
+                    Button(action: back15, label:
+                            {Image(systemName: "gobackward.15").resizable ()})
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 25)
+                        .foregroundColor(Color.black.opacity(0.2))
+                        .padding(.horizontal)
+                   
+                // Play/Pause Button
                 Button(action: playPause, label: {
                     Image(systemName: isPlaying ? "pause.circle.fill" :  "play.circle.fill").resizable().aspectRatio(contentMode: .fit).frame(width:50,height:50)
                 })
+                    
+                    // Jump ahead 15 seconds button
+                        Button(action: forward15, label:
+                                {Image(systemName: "goforward.15").resizable ()})
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25)
+                            .foregroundColor(Color.black.opacity(0.2))
+                            .padding(.horizontal)
+                    
+                }
+                
                 
                 Spacer()
                 
@@ -120,6 +142,19 @@ struct SessionView: View {
         }
     }
     
+    func back15() {
+        self.audioPlayer.pause()
+        
+        let currentTime = CMTimeGetSeconds(self.audioPlayer.currentTime())
+        
+        audioPlayer.seek(to: CMTime(seconds: currentTime-15, preferredTimescale: 60000))
+        
+        playValue = CMTimeGetSeconds(self.audioPlayer.currentTime())
+        
+        audioPlayer.play()
+        
+    }
+    
     func playPause() {
         if self.audioPlayer != nil {
             if isPlaying {
@@ -132,6 +167,18 @@ struct SessionView: View {
         }else{
             print("audioPlayer = nil")
         }
+    }
+    
+    func forward15() {
+        self.audioPlayer.pause()
+        
+        let currentTime = CMTimeGetSeconds(self.audioPlayer.currentTime())
+        
+        audioPlayer.seek(to: CMTime(seconds: currentTime+15, preferredTimescale: 60000))
+        
+        playValue = CMTimeGetSeconds(self.audioPlayer.currentTime())
+        
+        audioPlayer.play()
     }
     
     func changeSliderValue() {

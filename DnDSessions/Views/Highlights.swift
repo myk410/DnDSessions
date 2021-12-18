@@ -14,8 +14,9 @@ struct Highlights: View {
     
     var body: some View {
         
-        ScrollView{
+        
             VStack {
+                
                 Text("Highlights")
                     .font(Font.custom("Cochin", size: 35))
                     .bold()
@@ -29,6 +30,8 @@ struct Highlights: View {
                     .font(Font.custom("Cochin", size: 20))
                     .bold()
                     .padding(.bottom)
+            Divider()
+        ScrollView{
                 VStack(alignment:.leading){
                     
                     ForEach(session.highlights, id: \.self){ highlight in

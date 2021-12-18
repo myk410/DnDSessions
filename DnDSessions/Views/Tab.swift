@@ -11,6 +11,7 @@ struct Tab: View {
     
     var id: Int?
     var title: String
+    var textColor: Color?
     var color_1: Color
     var color_2: Color
     var size: Int
@@ -39,16 +40,31 @@ struct Tab: View {
                         .opacity(0.4)
                     
                     if bold {
+                        if textColor != nil {
                         Text(title)
                             .font(Font.custom("Cochin", size: CGFloat(size)))
                             .bold()
-                            .foregroundColor(color_2)
+                            .foregroundColor(textColor)
                             .padding(.leading, 30)
+                        }else{
+                            Text(title)
+                                .font(Font.custom("Cochin", size: CGFloat(size)))
+                                .bold()
+                                .foregroundColor(color_2)
+                                .padding(.leading, 30)
+                        }
                     }else{
+                        if textColor != nil {
                         Text(title)
                             .font(Font.custom("Cochin", size: CGFloat(size)))
-                            .foregroundColor(color_2)
+                            .foregroundColor(textColor)
                             .padding(.leading, 30)
+                        }else{
+                            Text(title)
+                                .font(Font.custom("Cochin", size: CGFloat(size)))
+                                .foregroundColor(color_2)
+                                .padding(.leading, 30)
+                        }
                     }
                 }else{
                     ZStack {
@@ -64,16 +80,32 @@ struct Tab: View {
                         
                     }
                     if bold {
+                    
+                        if textColor != nil {
                     Text(title)
                         .font(Font.custom("Cochin", size: CGFloat(size)))
                         .bold()
-                        .foregroundColor(color_2)
+                        .foregroundColor(textColor)
                         .padding(.leading, 70)
+                        }else{
+                            Text(title)
+                                .font(Font.custom("Cochin", size: CGFloat(size)))
+                                .bold()
+                                .foregroundColor(color_2)
+                                .padding(.leading, 70)
+                        }
                     }else{
+                        if textColor != nil {
                         Text(title)
                             .font(Font.custom("Cochin", size: CGFloat(size)))
-                            .foregroundColor(color_2)
+                            .foregroundColor(textColor)
                             .padding(.leading, 70)
+                        }else{
+                            Text(title)
+                                .font(Font.custom("Cochin", size: CGFloat(size)))
+                                .foregroundColor(color_2)
+                                .padding(.leading, 70)
+                        }
                     }
                 }
                 
